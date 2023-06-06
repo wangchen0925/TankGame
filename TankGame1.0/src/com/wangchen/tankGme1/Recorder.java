@@ -10,43 +10,27 @@ public class Recorder {
     private static BufferedWriter bw = null;
     private static BufferedReader br = null;
     private static String recordFile = "src\\myRecord.txt";
+    //定义Vector ,指向 MyPanel 对象的 敌人坦克Vector
     private static Vector<EnemyTank> enemyTanks = null;
-    private static Vector<Node> nodes = null;
-
-    public static int getAllEnemyTankNum() {
-        return allEnemyTankNum;
-    }
-
-    public static void setAllEnemyTankNum(int allEnemyTankNum) {
-        Recorder.allEnemyTankNum = allEnemyTankNum;
-    }
-
-    public static Vector<EnemyTank> getEnemyTanks() {
-        return enemyTanks;
-    }
 
     public static void setEnemyTanks(Vector<EnemyTank> enemyTanks) {
         Recorder.enemyTanks = enemyTanks;
     }
 
-    public static Vector<Node> getNodes() {
-        return nodes;
+    public static String getRecordFile() {
+        return recordFile;
     }
 
-    public static void setNodes(Vector<Node> nodes) {
-        Recorder.nodes = nodes;
-    }
 
-    public static void addAllEnemyTankNum() {
-        Recorder.allEnemyTankNum++;
-    }
 
+
+    //增加一个方法，当游戏退出时，我们将allEnemyTankNum 保存到 recordFile
+    //对keepRecord 进行升级, 保存敌人坦克的坐标和方向
 
     public static void keepRecord() {
         try {
             bw = new BufferedWriter(new FileWriter(recordFile));
             bw.write(allEnemyTankNum + "\r\n");
-
             //遍历敌人坦克的Vector ,然后根据情况保存即可.
             //OOP, 定义一个属性 ，然后通过setXxx得到 敌人坦克的Vector
             for (int i = 0; i < enemyTanks.size(); i++) {
@@ -72,32 +56,16 @@ public class Recorder {
         }
     }
 
-    public static Vector<Node> getNodesAndEnemyTankRecord() {
+    public static int getAllEnemyTankNum() {
+        return allEnemyTankNum;
+    }
 
-        try {
+    public static void setAllEnemyTankNum(int allEnemyTankNum) {
+        Recorder.allEnemyTankNum = allEnemyTankNum;
+    }
 
-            br = new BufferedReader(new FileReader(recordFile));
-            allEnemyTankNum = Integer.parseInt(br.readLine());
-            //循环读取文件，生成nodes 集合
-            String line = "";//255 40 0
-            while ((line = br.readLine()) != null) {
-                String[] xyd = line.split(" ");
-                Node node = new Node(Integer.parseInt(xyd[0]), Integer.parseInt(xyd[1]),
-                        Integer.parseInt(xyd[2]));
-                nodes.add(node);//放入nodes Vector
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return nodes;
+    //当我方坦克击毁一个敌人坦克，就应当 allEnemyTankNum++
+    public static void addAllEnemyTankNum() {
+        Recorder.allEnemyTankNum++;
     }
 }

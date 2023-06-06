@@ -11,7 +11,6 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
     //定义敌人坦克，放入到Vector
     Vector<EnemyTank> enemyTanks = new Vector<>();
-    Vector<Node> nodes = new Vector<>();
     int enemyTankSize = 5;
 
     Vector<Bomb> bombs = new Vector<>();
@@ -22,10 +21,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     Image image3 = null;
 
     public MyPanel() {
-        // 将MyPanel对象的 enemyTanks 设置给 Recorder 的 enemyTanks
+        //nodes = Recorder.getNodesAndEnemyTankRec();
+        //将MyPanel对象的 enemyTanks 设置给 Recorder 的 enemyTanks
         Recorder.setEnemyTanks(enemyTanks);
-        nodes = Recorder.getNodesAndEnemyTankRecord();
         myTank = new MyTank(500,500);   // 初始化我方坦克
+
 
         //初始化敌人坦克
         for (int i = 0; i < enemyTankSize; i++) {
@@ -51,6 +51,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         image1 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_1.gif"));
         image2 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_2.gif"));
         image3 = Toolkit.getDefaultToolkit().getImage(Panel.class.getResource("/bomb_3.gif"));
+
     }
 
     public void showInfo(Graphics g) {
@@ -60,8 +61,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         Font font = new Font("宋体", Font.BOLD, 25);
         g.setFont(font);
 
-        g.drawString("您累积击毁敌方坦克", 1020, 30);
-        drawTank(1020, 60, g, 0, 1);//画出一个敌方坦克
+        g.drawString("累计击毁敌方坦克", 1020, 30);
+        drawTank(1020, 60, g, 0, 0);//画出一个敌方坦克
         g.setColor(Color.BLACK);//这里需要重新设置成黑色
         g.drawString(Recorder.getAllEnemyTankNum() + "", 1080, 100);
 
@@ -219,11 +220,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     tank.setIsLive(false);
                     //当我的子弹击中敌人坦克后，将enemyTank 从Vector 拿掉
                     enemyTanks.remove(tank);
+
                     //当我方击毁一个敌人坦克时，就对数据allEnemyTankNum++
-                    //解读, 因为 tank 可以是 MyTAnk 也可以是 EnemyTank
+                    //解读, 因为 enemyTank 可以是 Hero 也可以是 EnemyTank
                     if (tank instanceof EnemyTank) {
                         Recorder.addAllEnemyTankNum();
                     }
+
                     //创建Bomb对象，加入到bombs集合
                     Bomb bomb = new Bomb(tank.getX(), tank.getY());
                     bombs.add(bomb);
@@ -239,8 +242,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     tank.setIsLive(false);
                     //当我的子弹击中敌人坦克后，将enemyTank 从Vector 拿掉
                     enemyTanks.remove(tank);
+
                     //当我方击毁一个敌人坦克时，就对数据allEnemyTankNum++
-                    //解读, 因为 tank 可以是 MyTAnk 也可以是 EnemyTank
+                    //解读, 因为 enemyTank 可以是 Hero 也可以是 EnemyTank
                     if (tank instanceof EnemyTank) {
                         Recorder.addAllEnemyTankNum();
                     }
